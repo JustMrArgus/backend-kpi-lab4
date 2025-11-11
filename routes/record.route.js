@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const protect = require("../middleware/protect");
 
 const {
   createRecord,
@@ -8,6 +9,8 @@ const {
 } = require("../controllers/record.controller");
 
 const router = Router();
+
+router.use(protect);
 
 router.post("/", createRecord);
 router.get("/", getRecords);

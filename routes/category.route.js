@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const protect = require("../middleware/protect");
 
 const {
   createCategory,
@@ -7,6 +8,8 @@ const {
 } = require("../controllers/category.controller");
 
 const router = Router();
+
+router.use(protect);
 
 router.post("/", createCategory);
 router.get("/", getCategories);

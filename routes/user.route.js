@@ -1,15 +1,21 @@
 const { Router } = require("express");
 
+const protect = require("../middleware/protect");
+
 const {
-  createUser,
-  getUsers,
+  signup,
+  login,
   getUser,
   deleteUser,
 } = require("../controllers/user.controller");
 
 const router = Router();
 
-router.post("/", createUser);
+router.post("/signup", signup);
+router.post("/login", login);
+
+router.use(protect);
+
 router.get("/:userId", getUser);
 router.delete("/:userId", deleteUser);
 
