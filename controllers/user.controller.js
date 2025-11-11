@@ -1,26 +1,58 @@
 const prisma = require("../prisma/client");
+const createAndSendToken = require("../utils/createAndSendToken");
+const bcrypt = require("bcrypt");
 
-const createUser = async (req, res) => {
-  const { name } = req.body;
-  if (!name) {
-    return res.status(400).json({ error: "Name is required" });
-  }
-
+const signup = async (req, res) => {
   try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+
     const newUser = await prisma.user.create({
       data: {
-        name,
-        account: {
-          create: { balance: 0 },
-        },
-      },
-      include: {
-        account: true,
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword,
       },
     });
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ error: "Could not create user" });
+
+    createAndSendToken(newUser, 201, res);
+  } catch (err) {
+    console.error("Signup error:", err);
+    res.status(400).json({
+      status: "fail",
+      message: "Error creating user.",
+    });
+  }
+};
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Please provide email and password!",
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({
+        status: "fail",
+        message: "Incorrect email or password.",
+      });
+    }
+
+    createAndSendToken(user, 200, res);
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({
+      status: "error",
+      message: "Something went wrong during login.",
+    });
   }
 };
 
@@ -64,7 +96,8 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-  createUser,
+  signup,
+  login,
   getUsers,
   getUser,
   deleteUser,
