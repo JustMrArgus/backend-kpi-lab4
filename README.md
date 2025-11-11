@@ -8,7 +8,7 @@
 
 **Every lab builds on the previous one**
 
-**Deployed version:** [LINK](https://backend-kpi-lab3.onrender.com/healthcheck)
+**Deployed version:** [LINK](https://backend-kpi-lab4.onrender.com/healthcheck)
 
 ## Requirements
 
@@ -24,10 +24,14 @@ The file should contain the following variables:
 
 `PORT`: The port on which the application server will run.
 `DATABASE_URL`: URL to your database.
+`JWT_SECRET`: Your secret JWT key.
+`JWT_EXPIRES_IN`: "Time after which your JWT key is expried.
 
 ```
 PORT=8000
 DATABASE_URL=your_database_url
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=7d
 ```
 
 **Default PORT is 3000 if not set in `.env` file**
