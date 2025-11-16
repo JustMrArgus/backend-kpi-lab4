@@ -11,12 +11,23 @@ const signup = async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
+        account: {
+          create: {},
+        },
       },
     });
 
     createAndSendToken(newUser, 201, res);
   } catch (err) {
     console.error("Signup error:", err);
+
+    if (err.code === "P2002" && err.meta?.target?.includes("email")) {
+      return res.status(409).json({
+        status: "fail",
+        message: "An account with this email already exists.",
+      });
+    }
+
     res.status(400).json({
       status: "fail",
       message: "Error creating user.",
