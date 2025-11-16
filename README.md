@@ -25,7 +25,7 @@ The file should contain the following variables:
 `PORT`: The port on which the application server will run.
 `DATABASE_URL`: URL to your database.
 `JWT_SECRET`: Your secret JWT key.
-`JWT_EXPIRES_IN`: "Time after which your JWT key is expried.
+`JWT_EXPIRES_IN`: Time after which your JWT key is expried.
 
 ```
 PORT=8000
