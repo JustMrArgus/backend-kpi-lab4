@@ -8,31 +8,8 @@ services:
       dockerfile: Dockerfile
     environment:
       PORT: "8080"
-      DATABASE_URL: "postgresql://myuser:mypassword@db:5432/myapp_db?schema=public"
+      DATABASE_URL: "postgresql://neondb_owner:npg_4scgjwIS1onG@ep-plain-glitter-a47r5fwv-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
       JWT_SECRET: "my_jwt_secret_key"
       JWT_EXPIRES_IN: "7d"
     ports:
       - "8080:8080"
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: postgres:16
-    restart: always
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: myapp_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U myuser -d myapp_db"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  postgres_data:
