@@ -21,7 +21,7 @@ const signup = async (req, res) => {
   } catch (err) {
     console.error("Signup error:", err);
 
-    if (err.code === "P2002" && err.meta?.target?.includes("email")) {
+    if (err.code === "P2002") {
       return res.status(409).json({
         status: "fail",
         message: "An account with this email already exists.",
