@@ -41,7 +41,7 @@ model Record {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
   
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId Int
 }
 
